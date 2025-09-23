@@ -75,7 +75,7 @@
 // });
 
 import React, { useEffect, useRef, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Animated, Alert } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Animated, Alert, I18nManager } from "react-native";
 import IconAlnuzul from '@/app/components/IconAlnuzul';
 import { Image } from "expo-image";
 import { icons } from "@/constants";
@@ -90,6 +90,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const { language, toggleLanguage } = useLanguageStore();
   const translateX = useRef(new Animated.Value(language === "ar" ? 0 : 32)).current;
+
+
+   I18nManager.allowRTL(false);
+      I18nManager.forceRTL(false);
+
 
   const ChangeLanguage = () => {
     const newLang = language === "ar" ? "en" : "ar";

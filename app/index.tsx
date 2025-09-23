@@ -18,7 +18,16 @@ import { useFonts } from 'expo-font';
 // const isRTL = Localization.isRTL; // التحقق مما إذا كانت اللغة الحالية RTL
 
 const Home = () => {
-  
+  useEffect(() => {
+    // Force app to stay LTR
+    I18nManager.allowRTL(false);
+    I18nManager.forceRTL(false);
+  }, []);
+
+   I18nManager.allowRTL(false);
+  I18nManager.forceRTL(false);
+
+
   return <Redirect href="/home" />
   
 }
