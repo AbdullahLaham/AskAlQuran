@@ -88,6 +88,7 @@ import { useFonts } from "expo-font";
 export default function Home() {
   const [surahs, setSurahs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isConnected, setIsConnected] = useState(true);
   const { language, toggleLanguage } = useLanguageStore();
   const translateX = useRef(new Animated.Value(language === "ar" ? 0 : 32)).current;
 
@@ -107,10 +108,26 @@ export default function Home() {
       useNativeDriver: true,
     }).start();
   };
-  
+   const fetchSurahs = async () => {
+      try {
+        const res  = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
+        // console.log(res.data, 'ddddddddddddddddddddddddddddd')
+        setSurahs(res.data.pageProps.surahs);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching surahs:", error);
+        if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
+          setIsConnected(false);
+        // Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+        return; // لا نسجل خروج المستخدم
+      }
+      } finally {
+        setLoading(false);
+        }
+      };
   useEffect(() => {
 
-    const fetchSurahs = async () => {
+    const fetchSurahss = async () => {
       try {
         const res  = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
         // console.log(res.data, 'ddddddddddddddddddddddddddddd')
@@ -120,13 +137,14 @@ export default function Home() {
         console.error("Error fetching surahs:", error);
         if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
         Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+        setIsConnected(false);
         return; // لا نسجل خروج المستخدم
       }
       } finally {
         setLoading(false);
         }
       };
-      fetchSurahs();
+      fetchSurahss();
     // fetch("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json")
     //   .then((res) => res.json())
     //   .then((data) => {
@@ -149,7 +167,30 @@ export default function Home() {
       Cairo: require("../../assets/fonts/Cairo-Regular.ttf"),
     });
   
-
+ // شاشة خاصة لو ما في إنترنت
+  if (!isConnected) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white p-4">
+        <Image source={icons.noInternet} style={{ width: 200, height: 200 }} />
+        <Text className="text-lg font-bold text-center mt-4" style={{ fontFamily: "Cairo" }}>
+          {language === "ar" ? "لا يوجد اتصال بالإنترنت" : "No Internet Connection"}
+        </Text>
+        <Text className="text-gray-500 text-center mt-2" style={{ fontFamily: "Cairo" }}>
+          {language === "ar"
+            ? "يرجى التحقق من الاتصال وحاول مرة أخرى"
+            : "Please check your connection and try again"}
+        </Text>
+        <TouchableOpacity
+          onPress={fetchSurahs}
+          className="mt-6 bg-emerald-600 px-6 py-3 rounded-2xl"
+        >
+          <Text className="text-white font-bold">
+            {language === "ar" ? "إعادة المحاولة" : "Retry"}
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">

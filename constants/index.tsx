@@ -4,6 +4,7 @@ import holyIcon from "@/assets/icons/holy.jpg";
 import homeIcon from "@/assets/icons/home.png";
 import splitIcon from "@/assets/icons/split.png";
 import mainIcon from "@/assets/images/logo.png";
+import nonet from "@/assets/icons/nonet.png";
 
 
 
@@ -41,7 +42,8 @@ export const icons = {
     holy: holyIcon,
     home: homeIcon,
     split: splitIcon,
-    icon: mainIcon
+    icon: mainIcon,
+    noInternet: nonet,
 }
 
 

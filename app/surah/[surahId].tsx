@@ -24,6 +24,7 @@ export default function SurahId() {
 
   const [loading, setLoading] = useState(false);
   const [nloading, setNLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
   const [viewState, setViewState] = useState<'joined' | 'splitted'>('joined');
   // const [language, setLanguage] = useState("ar"); // "ar" or "en"
 
@@ -97,7 +98,29 @@ export default function SurahId() {
     }).start();
   };
 
+ const fetchSurahs = async () => {
+      setLoading(true)
+      try {
+        const res = await axios.get(`https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/quran/${id}.json?surahId=${id}`)
+        const data = res.data;
+        setSurah(data.pageProps.surah);
 
+        // تحديث العنوان باسم السورة
+        navigation.setOptions({
+          title: data.pageProps.surah.name.ar,
+        });
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+        if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
+        // Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+        setIsConnected(false);
+        return; // لا نسجل خروج المستخدم
+      }
+      } finally {
+        setLoading(false);
+      }
+    };
 
 
   useEffect(() => {
@@ -119,7 +142,8 @@ export default function SurahId() {
         setLoading(false);
         console.error(error);
         if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
-        Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+        setIsConnected(false);
+          // Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
         return; // لا نسجل خروج المستخدم
       }
       } finally {
@@ -169,15 +193,39 @@ export default function SurahId() {
     );
   }
 
-  if (!surah) {
+
+// شاشة خاصة لو ما في إنترنت
+  if (!isConnected || !surah) {
     return (
-      <View className="flex-1 items-center justify-center bg-white">
-        <Text className="text-red-500 font-bold">Surah not found!</Text>
-      </View>
+      <SafeAreaView className="flex-1 items-center justify-center bg-white p-4">
+        <Image source={icons.noInternet} style={{ width: 200, height: 200 }} />
+        <Text className="text-lg font-bold text-center mt-4" style={{ fontFamily: "Cairo" }}>
+          {language === "ar" ? "لا يوجد اتصال بالإنترنت" : "No Internet Connection"}
+        </Text>
+        <Text className="text-gray-500 text-center mt-2" style={{ fontFamily: "Cairo" }}>
+          {language === "ar"
+            ? "يرجى التحقق من الاتصال وحاول مرة أخرى"
+            : "Please check your connection and try again"}
+        </Text>
+        <TouchableOpacity
+          onPress={fetchSurahs}
+          className="mt-6 bg-emerald-600 px-6 py-3 rounded-2xl"
+        >
+          <Text className="text-white font-bold">
+            {language === "ar" ? "إعادة المحاولة" : "Retry"}
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     );
   }
 
-  
+  //   if (!surah) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center bg-white">
+  //       <Text className="text-red-500 font-bold">Surah not found!</Text>
+  //     </View>
+  //   );
+  // }
   if (!loaded) {
     // Async font loading only occurs in development.
     return null;
