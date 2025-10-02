@@ -6,6 +6,7 @@ import splitIcon from "@/assets/icons/split.png";
 import mainIcon from "@/assets/images/logo.png";
 import nonet from "@/assets/icons/nonet.png";
 
+import nfound from "@/assets/images/nfound.jpg";
 
 
 import { Platform } from 'react-native';
@@ -44,6 +45,7 @@ export const icons = {
     split: splitIcon,
     icon: mainIcon,
     noInternet: nonet,
+    notFound: nfound,
 }
 
 

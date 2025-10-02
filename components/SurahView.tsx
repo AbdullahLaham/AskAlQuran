@@ -1,10 +1,17 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Alert, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 import  convertToArabicNumerals  from '@/utils/convertToArabicNumerals';
+import { useFontSize } from '@/store/useFontSize';
 
 
 const SurahView = ({ viewState, surah }: any) => {
-  const {toArabic} = convertToArabicNumerals()
+  const {toArabic} = convertToArabicNumerals();
+  const [pressableId, setPressableId] = useState("");
+  const {fontSize, setFontSize} = useFontSize(); // الحجم الافتراضي
+  const showModal = () => {
+    // Alert.alert("Verse Options", "You long-pressed on verse " + pressableId);
+    Alert.alert("Verse Options", "خيارات الآية " + pressableId);
+  }
 
   return (
     <View>
@@ -24,8 +31,8 @@ const SurahView = ({ viewState, surah }: any) => {
 
               <Text className="text-2xl leading-loose text-black font-semibold text-center" style={{ fontFamily: 'hafs' }}>
                 {versesInPage
-                  .map((verse: any) => (
-                    <Text key={verse.number} style={{ fontFamily: 'hafs' }} className='font-semibold'>
+                  .map((verse: any, i: number) => (
+                    <Text  onPress={() => setPressableId(`${index}-${i}`)}     onLongPress={() => {setPressableId(`${index}-${i}`); showModal()}}  key={verse.number} style={{ fontFamily: 'hafs' }} className={`font-semibold text-[${fontSize}px] ${`${index}-${i}` == pressableId && "bg-gray-200 px-3"}` }>
                       {verse.text.ar}
 
                       <Text className="text-[#4db6ac] font-bold" style={{ fontFamily: 'hafs' }}>
