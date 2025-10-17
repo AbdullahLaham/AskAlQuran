@@ -8,12 +8,13 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Animated, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import {getSurahByIndex} from "@/utils/getSurahByIndex"
 import { useLanguageStore } from "@/store/useLanguageStore";
 import DescriptionBox from "../../components/DescriptionBox";
 import NavigationButtons from "../../components/NavigationButton";
 import SurahView from "../../components/SurahView";
 import ToggleModeButton from "../../components/ToggleModeButton";
+import { normalizeDuration } from "react-native-reanimated/lib/typescript/css/native";
 
 
 export default function SurahId() {
@@ -100,6 +101,8 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
     }).start();
   };
 
+
+  
  const fetchSurahs = async () => {
       setLoading(true)
       try {
@@ -109,8 +112,9 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
 
         // تحديث العنوان باسم السورة
         navigation.setOptions({
-          title: data.pageProps.surah.name.ar,
+          title: language == 'ar' ? data.pageProps.surah.name.ar : data.pageProps.surah.name.transliteration,
         });
+
       } catch (error) {
         setLoading(false);
         console.error(error);
@@ -130,16 +134,22 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
     console.log(id, 'rrrrrrrrrrrrrrrrrrrrrrrr')
 
     const fetchSurah = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-        const res = await axios.get(`https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/quran/${id}.json?surahId=${id}`)
-        const data = res.data;
-        setSurah(data.pageProps.surah);
+        // const res = await axios.get(`https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/quran/${id}.json?surahId=${id}`)
+        // const data = res.data;
+
+        const res = getSurahByIndex(parseInt(id));
+        // const data = { pageProps: { surah: res } };
+        setSurah(res);
+
+        // setSurah(res.pageProps.surah);
 
         // تحديث العنوان باسم السورة
         navigation.setOptions({
-          title: data.pageProps.surah.name.ar,
+          title: language == 'ar' ? res.name.ar : res.name.transliteration,
         });
+
       } catch (error) {
         setLoading(false);
         console.error(error);
@@ -159,11 +169,19 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
     const fetchNeighbor = async (nid: number, setFn: any) => {
       setNLoading(true)
       try {
-        const res = await fetch(
-          `https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/quran/${nid}.json?surahId=${nid}`
-        );
-        const data = await res.json();
-        setFn(data.pageProps.surah);
+        // const res = await fetch(
+        //   `https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/quran/${nid}.json?surahId=${nid}`
+        // );
+        // const data = await res.json();
+        // setFn(data.pageProps.surah);
+        const res = getSurahByIndex(nid);
+        setFn(res);
+           // تحديث العنوان باسم السورة
+        navigation.setOptions({
+          title: language == 'ar' ? res.name.ar : res.name.transliteration,
+        });
+
+
       } catch { }
       finally {
         setNLoading(false);

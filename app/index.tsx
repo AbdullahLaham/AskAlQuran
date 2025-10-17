@@ -122,7 +122,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Animated, Alert, I18nManager } from "react-native";
-import IconAlnuzul from '@/app/components/IconAlnuzul';
+// import IconAlnuzul from '@/app/components/IconAlnuzul';
 import { Image } from "expo-image";
 import { icons } from "@/constants";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -130,10 +130,11 @@ import { router } from "expo-router";
 import axios from "axios";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { useFonts } from "expo-font";
+import surahsData from "../public/json/metadata.json";
 
 export default function Home() {
-  const [surahs, setSurahs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [surahs, setSurahs] = useState(surahsData);
+  const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
   const { language, toggleLanguage } = useLanguageStore();
   const translateX = useRef(new Animated.Value(language === "ar" ? 0 : 32)).current;
@@ -171,36 +172,9 @@ export default function Home() {
         setLoading(false);
         }
       };
+      
   useEffect(() => {
-
-    const fetchSurahss = async () => {
-      try {
-        const res  = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
-        // console.log(res.data, 'ddddddddddddddddddddddddddddd')
-        setSurahs(res.data.pageProps.surahs);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching surahs:", error);
-        if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
-        Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
-        setIsConnected(false);
-        return; // لا نسجل خروج المستخدم
-      }
-      } finally {
-        setLoading(false);
-        }
-      };
-      fetchSurahss();
-    // fetch("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setSurahs(data.pageProps.surahs);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setLoading(false);
-    //   });
+      // fetchSurahss();
   }, []);
 
       const [loaded] = useFonts({
@@ -237,13 +211,13 @@ export default function Home() {
       </SafeAreaView>
     );
   }
-  if (loading) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#4db6ac" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center">
+  //       <ActivityIndicator size="large" color="#4db6ac" />
+  //     </View>
+  //   );
+  // }
   
   if (!loaded) {
     // Async font loading only occurs in development.

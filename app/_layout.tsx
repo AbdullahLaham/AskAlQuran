@@ -46,6 +46,7 @@ import "@/global.css";
 import { useFontSize } from "@/store/useFontSize";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import MainHeader from "../components/MainHeader";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // 🟢 محتوى Drawer مخصص
 function CustomDrawerContent(props) {
@@ -68,9 +69,10 @@ function CustomDrawerContent(props) {
             Font size <Text>{fontSize}</Text>px
           </Text>
           <View className="w-full items-center">
+
             <Slider
               style={{ width: 250, height: 40 }}
-              minimumValue={20}
+              minimumValue={15}
               maximumValue={48}
               step={1}
               value={fontSize}
@@ -79,8 +81,13 @@ function CustomDrawerContent(props) {
               thumbTintColor="#4db6ac"
               onValueChange={(value) => setFontSize(value)}
             />
+
           </View>
         </View>
+        {/* <ThemeToggle /> */}
+
+
+
 
         {/* Drawer Items */}
         <DrawerItemList {...props} />

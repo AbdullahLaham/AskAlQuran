@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useLanguageStore } from '@/store/useLanguageStore';
 import { icons } from '@/constants';
+import { router } from 'expo-router';
 
 const MainHeader = ({ navigation, route, options }: any) => {
 
@@ -22,7 +23,7 @@ const MainHeader = ({ navigation, route, options }: any) => {
         }).start();
       };
   return (
-    <View className={`flex-row items-center justify-between bg-[#edf0f4] mt-8  bg-gradient-to-r from-blue-600 to-purple-500 h-16 px-4 shadow-lg ${language === "ar" ? "flex-row-reverse" : "flex-row"}`}>
+    <View  className={`flex-row items-center justify-between bg-[#edf0f4] mt-8  bg-gradient-to-r from-blue-600 to-purple-500 h-16 px-4 shadow-lg ${language === "ar" ? "flex-row-reverse" : "flex-row"}`}>
               {/* Left: Hamburger */}
               <TouchableOpacity onPress={() => navigation.toggleDrawer()} className=' rounded-md h-10 w-10 items-center justify-center'>
                 <Ionicons name="menu" size={33} color="black" />
@@ -51,7 +52,9 @@ const MainHeader = ({ navigation, route, options }: any) => {
                           }}
                         />
                       </TouchableOpacity>
-                      <Image source={icons.icon} style={{ width: 45, height: 45, borderRadius: 50 }} />
+                      <TouchableOpacity onPress={() => router.push("/")}>
+                        <Image source={icons.icon} style={{ width: 45, height: 45, borderRadius: 50 }} />
+                      </TouchableOpacity>
               
             </View>
   )

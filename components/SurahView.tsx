@@ -6,18 +6,22 @@ import { useFontSize } from '@/store/useFontSize';
 
 const SurahView = ({ viewState, surah }: any) => {
   const {toArabic} = convertToArabicNumerals();
-  const [pressableId, setPressableId] = useState("");
+  const [tafsirVerses, setTafsirVerses] = useState([]);
   const {fontSize, setFontSize} = useFontSize(); // الحجم الافتراضي
   const showModal = () => {
     // Alert.alert("Verse Options", "You long-pressed on verse " + pressableId);
-    Alert.alert("Verse Options", "خيارات الآية " + pressableId);
+    Alert.alert("Verse Options", "خيارات الآية " + tafsirVerses.length);
   }
-
+console.log('surah in surahview', fontSize);
   return (
-    <View>
+    <View className='relative flex-1 bg-gray-100'>
       {viewState === "joined" ? (
         <View className="p-2">
           <Text className="text-2xl leading-loose  font-bold text-right mx-auto text-[#4db6ac]" style={{ fontFamily: 'bismillah' }}>{surah.number == 9 ? "أعوذ بالله من الشيطان الرجيم" : "بسم الله الرحمن الرحيم"}</Text>
+          {/* {pressableIds.length > 0 && (<View className='mx-auto my-auto w-28 h-28 bg-white rounded-lg border-4 border-[#4db6ac] flex items-center justify-center  z-50 -left-[50%] -top-[50%] fixed'>
+            <Text className="text-center text-gray-500 mb-2">Tafsir</Text>
+
+          </View>)} */}
           {Object.values(
             surah.verses.reduce((acc: any, verse: any) => {
               const page = verse.page;
@@ -28,11 +32,12 @@ const SurahView = ({ viewState, surah }: any) => {
           ).map((versesInPage: any, index: number) => (
             <View key={index} className="mb-6">
               {/* النصوص المجمعة لصفحة واحدة */}
-
-              <Text className="text-2xl leading-loose text-black font-semibold text-center" style={{ fontFamily: 'hafs' }}>
+              
+              <Text className=" leading-loose text-black font-semibold text-center" style={{ fontSize, fontFamily: 'hafs' }}>
+               {/**change this fontsize to be changeble as the fontsize varibale */}
                 {versesInPage
                   .map((verse: any, i: number) => (
-                    <Text  onPress={() => setPressableId(`${index}-${i}`)}     onLongPress={() => {setPressableId(`${index}-${i}`); showModal()}}  key={verse.number} style={{ fontFamily: 'hafs' }} className={`font-semibold text-[${fontSize}px] ${`${index}-${i}` == pressableId && "bg-gray-200 px-3"}` }>
+                    <Text style={{fontSize: fontSize}} onPress={() => {setPressableIds([...pressableIds, `${index}-${i}`]); setTafsirVerses([...tafsirVerses, verse])}}     onLongPress={() => {setPressableIds([...pressableIds, `${index}-${i}`]); showModal(); setTafsirVerses([...tafsirVerses, verse])}}  key={verse.number} style={{ fontFamily: 'hafs' }} className={`font-semibold ${tafsirVerses.find((v) => v.number == verse.number)   && "bg-gray-200 px-3"}` }>
                       {verse.text.ar}
 
                       <Text className="text-[#4db6ac] font-bold" style={{ fontFamily: 'hafs' }}>
@@ -60,13 +65,13 @@ const SurahView = ({ viewState, surah }: any) => {
             keyExtractor={(item) => item.number.toString()}
             contentContainerStyle={{ padding: 12 }}
             renderItem={({ item }) => (
-              <View className="mb-4 p-4 bg-white rounded-xl shadow" style={{ fontFamily: 'hafs' }}>
-                <Text className="text-xl font-arabic text-right text-black leading-relaxed" style={{ fontFamily: 'hafs' }}>
+              <View className="mb-4 p-4 bg-white rounded-xl shadow" style={{ fontFamily: 'hafs', fontSize }}>
+                <Text className="text-xl font-arabic text-right text-black leading-relaxed" style={{ fontFamily: 'hafs', fontSize }}>
                   {item.text.ar} <Text className="text-[#4db6ac] font-bold"  style={{ writingDirection: "rtl" }}>
                       {toArabic(item.number)}&#1757;
                       </Text>
                 </Text>
-                <Text className="text-gray-600 mt-2" style={{ fontFamily: 'hafs' }}>{item.text.en}</Text>
+                <Text className="text-gray-600 mt-2" style={{ fontFamily: 'hafs', fontSize }}>{item.text.en}</Text>
               </View>
             )}
           />
