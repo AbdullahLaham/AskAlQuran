@@ -290,7 +290,7 @@ if (!currentId || !surah) {
         <NavigationButtons prevId={prevId} prevSurah={prevSurah} nextId={nextId} nextSurah={nextSurah} language={language} nloading={nloading} />
 
         <ToggleModeButton translateViewX={translateViewX} toggleMode={toggleMode} />
-        <SurahView viewState={viewState} surah={surah} />
+        <SurahView viewState={viewState} surah={surah} language={language} />
       </ScrollView>
 
     </SafeAreaView>

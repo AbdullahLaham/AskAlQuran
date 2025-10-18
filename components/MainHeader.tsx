@@ -26,7 +26,7 @@ const MainHeader = ({ navigation, route, options }: any) => {
     <View  className={`flex-row items-center justify-between bg-[#edf0f4] mt-8  bg-gradient-to-r from-blue-600 to-purple-500 h-16 px-4 shadow-lg ${language === "ar" ? "flex-row-reverse" : "flex-row"}`}>
               {/* Left: Hamburger */}
               <TouchableOpacity onPress={() => navigation.toggleDrawer()} className=' rounded-md h-10 w-10 items-center justify-center'>
-                <Ionicons name="menu" size={33} color="black" />
+                <Ionicons name="menu" size={33} color="#4db6ac" />
               </TouchableOpacity>
   
               {/* Center: Title */}
