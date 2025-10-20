@@ -15,6 +15,7 @@ import NavigationButtons from "../../components/NavigationButton";
 import SurahView from "../../components/SurahView";
 import ToggleModeButton from "../../components/ToggleModeButton";
 import { normalizeDuration } from "react-native-reanimated/lib/typescript/css/native";
+import Toast from 'react-native-toast-message';
 
 
 export default function SurahId() {
@@ -27,6 +28,8 @@ export default function SurahId() {
   const [nloading, setNLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
   const [viewState, setViewState] = useState<'joined' | 'splitted'>('joined');
+  const [pageLoading, setPageLoading] = useState(true);
+
   // const [language, setLanguage] = useState("ar"); // "ar" or "en"
 
   const { language, toggleLanguage } = useLanguageStore();
@@ -194,6 +197,15 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
     if (nextId) fetchNeighbor(nextId, setNextSurah);
   }, [id]);
 
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setPageLoading(false);
+  }, 2000); // 2 seconds
+
+  return () => clearTimeout(timer);
+}, []);
+
 //   useEffect(() => {
 //     console.log(surah, 'sssssssssssssssssssssssssssss');
 //     Animated.timing(translateViewX, {
@@ -212,29 +224,48 @@ console.log(currentId, 'sssssssssssssssssssssssssssss');
       </View>
     );
   }
+  if (pageLoading) {
+  return (
+    <View className="flex-1 justify-center items-center bg-gray-100">
+      <ActivityIndicator size="large" color="#4db6ac" />
+      <Text className="mt-3 text-gray-600 font-semibold">Loading...</Text>
+    </View>
+  );
+}
 
 if (!currentId || !surah) {
-     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-white p-4">
-        <Image source={icons.notFound} style={{ width: 300, height: 300 }} />
-        <Text className="text-lg font-bold text-center mt-4" style={{ fontFamily: "Cairo" }}>
-          {language === "ar" ? "السورة التي تبحث عنها غير موجودة." : "Surah not found!"}
-        </Text>
-        <Text className="text-gray-500 text-center mt-2" style={{ fontFamily: "Cairo" }}>
-          {language === "ar"
-            ? "السورة التي تبحث عنها غير موجودة."
-            : "The Surah you are looking for does not exist."}
-        </Text>
-        <TouchableOpacity
-          onPress={fetchSurahs}
-          className="mt-6 bg-emerald-600 px-6 py-3 rounded-2xl"
-        >
-          <Text className="text-white font-bold">
-            {language === "ar" ? "إعادة المحاولة" : "Retry"}
-          </Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    );
+return (
+  
+  <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#4db6ac" />
+        <Text className="mt-2 text-gray-500">Loading...</Text>
+      </View>
+)
+      
+    //  return (
+    
+    //   <SafeAreaView className="flex-1 items-center justify-center bg-white p-4">
+    //           <Toast />
+
+    //     <Image source={icons.notFound} style={{ width: 300, height: 300 }} />
+    //     <Text className="text-lg font-bold text-center mt-4" style={{ fontFamily: "Cairo" }}>
+    //       {language === "ar" ? "السورة التي تبحث عنها غير موجودة." : "Surah not found!"}
+    //     </Text>
+    //     <Text className="text-gray-500 text-center mt-2" style={{ fontFamily: "Cairo" }}>
+    //       {language === "ar"
+    //         ? "السورة التي تبحث عنها غير موجودة."
+    //         : "The Surah you are looking for does not exist."}
+    //     </Text>
+    //     <TouchableOpacity
+    //       onPress={fetchSurahs}
+    //       className="mt-6 bg-emerald-600 px-6 py-3 rounded-2xl"
+    //     >
+    //       <Text className="text-white font-bold">
+    //         {language === "ar" ? "إعادة المحاولة" : "Retry"}
+    //       </Text>
+    //     </TouchableOpacity>
+    //   </SafeAreaView>
+    // );
   }
 
 

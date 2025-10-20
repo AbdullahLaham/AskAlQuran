@@ -5,6 +5,7 @@ import homeIcon from "@/assets/icons/home.png";
 import splitIcon from "@/assets/icons/split.png";
 import mainIcon from "@/assets/images/logo.png";
 import nonet from "@/assets/icons/nonet.png";
+import copy from "@/assets/icons/copy.png";
 
 import nfound from "@/assets/images/nfound.jpg";
 
@@ -46,6 +47,7 @@ export const icons = {
     icon: mainIcon,
     noInternet: nonet,
     notFound: nfound,
+    copy: copy,
 }
 
 

@@ -19,8 +19,8 @@
 //       I18nManager.allowRTL(false);
 //       I18nManager.forceRTL(false);
 //     }, []);
-  
-  
+
+
 //   // eas build --profile preview --platform android
 
 
@@ -47,6 +47,8 @@ import { useFontSize } from "@/store/useFontSize";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import MainHeader from "../components/MainHeader";
 import ThemeToggle from "@/components/ThemeToggle";
+import { RootSiblingParent } from 'react-native-root-siblings';
+
 
 // 🟢 محتوى Drawer مخصص
 function CustomDrawerContent(props) {
@@ -102,27 +104,27 @@ export default function Layout() {
   const position = language === "ar" ? "right" : "left";
 
   return (
-    <Drawer
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        header: ({ navigation, route, options }) => (
-          <MainHeader navigation={navigation} route={route} options={options} />
-        ),
-        headerTintColor: "white",
-        drawerStyle: { width: 250 },
-        drawerPosition: position,
-        overlayColor: "transparent",
-      }}
-    >
-      {/* Home */}
-      <Drawer.Screen
-        name="index"
-        options={{
-          title: language === "ar" ? "الصفحة الرئيسيه" : "Home Page",
+      <Drawer
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        screenOptions={{
+          header: ({ navigation, route, options }) => (
+            <MainHeader navigation={navigation} route={route} options={options} />
+          ),
+          headerTintColor: "white",
+          drawerStyle: { width: 250 },
+          drawerPosition: position,
+          overlayColor: "transparent",
         }}
-      />
+      >
+        {/* Home */}
+        <Drawer.Screen
+          name="index"
+          options={{
+            title: language === "ar" ? "الصفحة الرئيسيه" : "Home Page",
+          }}
+        />
 
-      {/* Surah list
+        {/* Surah list
       <Drawer.Screen
         name="surah/index"
         options={{
@@ -130,7 +132,8 @@ export default function Layout() {
         }}
       /> */}
 
-      
-    </Drawer>
+
+      </Drawer>
+
   );
 }

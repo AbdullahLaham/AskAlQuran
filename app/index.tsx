@@ -29,7 +29,7 @@
 
 
 //   return <Redirect href="/home" />
-  
+
 // }
 
 // export default Home
@@ -131,6 +131,8 @@ import axios from "axios";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { useFonts } from "expo-font";
 import surahsData from "../public/json/metadata.json";
+import { RootSiblingParent } from 'react-native-root-siblings';
+
 
 export default function Home() {
   const [surahs, setSurahs] = useState(surahsData);
@@ -140,8 +142,8 @@ export default function Home() {
   const translateX = useRef(new Animated.Value(language === "ar" ? 0 : 32)).current;
 
 
-   I18nManager.allowRTL(false);
-      I18nManager.forceRTL(false);
+  I18nManager.allowRTL(false);
+  I18nManager.forceRTL(false);
 
 
   const ChangeLanguage = () => {
@@ -155,41 +157,42 @@ export default function Home() {
       useNativeDriver: true,
     }).start();
   };
-   const fetchSurahs = async () => {
-      try {
-        const res  = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
-        // console.log(res.data, 'ddddddddddddddddddddddddddddd')
-        setSurahs(res.data.pageProps.surahs);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching surahs:", error);
-        if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
-          setIsConnected(false);
+  const fetchSurahs = async () => {
+    try {
+      const res = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
+      // console.log(res.data, 'ddddddddddddddddddddddddddddd')
+      setSurahs(res.data.pageProps.surahs);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching surahs:", error);
+      if (error.code === "ERR_NETWORK" || error.message.includes("Network Error")) {
+        setIsConnected(false);
         // Alert.alert("خطأ في الاتصال", "يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
         return; // لا نسجل خروج المستخدم
       }
-      } finally {
-        setLoading(false);
-        }
-      };
-      
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-      // fetchSurahss();
+    // fetchSurahss();
   }, []);
 
-      const [loaded] = useFonts({
-      SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-      ReemKufi: require("../assets/fonts/ReemKufi-VariableFont_wght.ttf"),
-      AmiriQuran: require("../assets/fonts/AmiriQuran-Regular.ttf"),
-      bismillah: require("../assets/fonts/bismillah/QCF_Bismillah_COLOR-Regular.ttf"),
-      hafs: require("../assets/fonts/hafs/uthmanic_hafs_v22.ttf"),
-      mehr: require("../assets/fonts/mehr/mehr.ttf"),
-      Cairo: require("../assets/fonts/Cairo-Regular.ttf"),
-    });
-  
- // شاشة خاصة لو ما في إنترنت
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    ReemKufi: require("../assets/fonts/ReemKufi-VariableFont_wght.ttf"),
+    AmiriQuran: require("../assets/fonts/AmiriQuran-Regular.ttf"),
+    bismillah: require("../assets/fonts/bismillah/QCF_Bismillah_COLOR-Regular.ttf"),
+    hafs: require("../assets/fonts/hafs/uthmanic_hafs_v22.ttf"),
+    mehr: require("../assets/fonts/mehr/mehr.ttf"),
+    Cairo: require("../assets/fonts/Cairo-Regular.ttf"),
+  });
+
+  // شاشة خاصة لو ما في إنترنت
   if (!isConnected) {
     return (
+
       <SafeAreaView className="flex-1 items-center justify-center bg-white p-4">
         <Image source={icons.noInternet} style={{ width: 200, height: 200 }} />
         <Text className="text-lg font-bold text-center mt-4" style={{ fontFamily: "Cairo" }}>
@@ -218,7 +221,7 @@ export default function Home() {
   //     </View>
   //   );
   // }
-  
+
   if (!loaded) {
     // Async font loading only occurs in development.
     return null;
@@ -226,12 +229,14 @@ export default function Home() {
 
 
 
-  
-//  console.log(surahs[0], 'sssssssssssssssssssssssssssss')
+
+  //  console.log(surahs[0], 'sssssssssssssssssssssssssssss')
   return (
-    <SafeAreaView className="flex-1 p-2 bg-[#edf0f4]">
-      {/* زر لتغيير اللغة */}
-      {/* <TouchableOpacity
+    <RootSiblingParent>
+
+      <SafeAreaView className="flex-1 p-2 bg-[#edf0f4]">
+        {/* زر لتغيير اللغة */}
+        {/* <TouchableOpacity
         onPress={() => setLanguage(language === "ar" ? "en" : "ar")}
         className="mb-4 bg-green-500 py-2 px-4 rounded"
       >
@@ -241,7 +246,7 @@ export default function Home() {
 
         
       </TouchableOpacity> */}
-      {/* <View className="flex flex-row items-center justify-between p-2 ">
+        {/* <View className="flex flex-row items-center justify-between p-2 ">
         <TouchableOpacity
           onPress={ChangeLanguage}
           className="w-20 h-10  rounded-full flex-row items-center px-1 relative border border-emerald-600"
@@ -262,43 +267,45 @@ export default function Home() {
       </View> */}
 
 
-      {/* the title */}
+        {/* the title */}
 
-      <Text className="text-3xl font-bold text-center mx-auto pb-2" style={{fontFamily: "Cairo"}}>{language == 'en' ? "Holy Quran Surahs Index" : "فهرس سور القرآن الكريم"}</Text>
+        <Text className="text-3xl font-bold text-center mx-auto pb-2" style={{ fontFamily: "Cairo" }}>{language == 'en' ? "Holy Quran Surahs Index" : "فهرس سور القرآن الكريم"}</Text>
 
-      {/* عرض السور */}
+        {/* عرض السور */}
 
-      <FlatList
+        <FlatList
 
-        data={surahs}
-        keyExtractor={(item) => item?.number.toString()}
-        renderItem={({ item }) => (
-          
-          <TouchableOpacity onPress={() => router.push(`/surah/${item?.number}`)}>
-            <View className="py-3 border-b border-gray-300 bg-white my-2 border   px-3  shadow rounded-md ">
-            {language === "ar" ? (
-              <Text className="text-xl font-bold  rounded ml-auto" style={{fontFamily: "Cairo"}}>
-               {item?.number} - {item.name.ar} 
-            </Text>
-            ) : (
-              <Text className="text-xl font-bold  rounded " style={{fontFamily: "Cairo"}}>
-               {item?.number} - {item.name.transliteration}
-            </Text>
-            )}
+          data={surahs}
+          keyExtractor={(item) => item?.number.toString()}
+          renderItem={({ item }) => (
 
-            <View className={`flex items-center justify-between ${language == 'en' ? 'flex-row' : 'flex-row-reverse'} mt-2`}>
-              {item?.revelation_place?.en == 'meccan' ? <Image source={icons.kaaba} style={{ width: 25, height: 25 }} />
-                : <Image source={icons.qubaa} style={{ width: 25, height: 25 }} />}
-              <Text className="text-md font-semibold text-gray-500 italic">
-                {item?.verses_count} {language == 'en' ? "Verses" : 'آية' }
-              </Text>
-            </View>
+            <TouchableOpacity onPress={() => router.push(`/surah/${item?.number}`)}>
+              <View className="py-3 border-b border-gray-300 bg-white my-2 border   px-3  shadow rounded-md ">
+                {language === "ar" ? (
+                  <Text className="text-xl font-bold  rounded ml-auto" style={{ fontFamily: "Cairo" }}>
+                    {item?.number} - {item.name.ar}
+                  </Text>
+                ) : (
+                  <Text className="text-xl font-bold  rounded " style={{ fontFamily: "Cairo" }}>
+                    {item?.number} - {item.name.transliteration}
+                  </Text>
+                )}
+
+                <View className={`flex items-center justify-between ${language == 'en' ? 'flex-row' : 'flex-row-reverse'} mt-2`}>
+                  {item?.revelation_place?.en == 'meccan' ? <Image source={icons.kaaba} style={{ width: 25, height: 25 }} />
+                    : <Image source={icons.qubaa} style={{ width: 25, height: 25 }} />}
+                  <Text className="text-md font-semibold text-gray-500 italic">
+                    {item?.verses_count} {language == 'en' ? "Verses" : 'آية'}
+                  </Text>
+                </View>
 
 
-          </View>
-          </TouchableOpacity>
-        )}
-      />
-    </SafeAreaView>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      </SafeAreaView>
+    </RootSiblingParent>
+
   );
 }
