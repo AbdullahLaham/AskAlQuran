@@ -197,7 +197,7 @@
 //     setTafsirVerses([]);
 //   }, []);
 
-  
+
 //   const updateTafsirVerses = (verse: any) => {
 //   let vess = [...tafsirVerses]; // انسخ عشان ما نعدلش على الأصل
 //   const exists = vess.some(v => v.number === verse.number);
@@ -554,11 +554,11 @@ const SurahView = ({ viewState, surah, language }: any) => {
   const [tafsirVerseText, setTafsirVerseText] = useState<string>('');
   const [loadingTafsir, setLoadingTafsir] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-    const [copiedIndex, setCopiedIndex] = useState<number | null>(null); // لتحديد الآية المنسوخة
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null); // لتحديد الآية المنسوخة
 
 
 
-console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
+  console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
   useEffect(() => {
     setTafsirVerses([]);
   }, []);
@@ -579,7 +579,7 @@ console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
   // const copyToClipboard = async (text: any) => {
 
 
-    const copyToClipboard = async (text: string, index: number) => {
+  const copyToClipboard = async (text: string, index: number) => {
     try {
       await Clipboard.setStringAsync(text);
       setCopiedIndex(index);
@@ -645,48 +645,78 @@ console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
   return (
     <View className="relative flex-1 bg-gray-100">
       {
-      
-      viewState === "joined" ? (
-        <View className="p-2">
-          <Text className="text-2xl leading-loose font-bold text-right mx-auto text-[#4db6ac]" style={{ fontFamily: 'bismillah' }}>
-            {surah.number == 9 ? "أعوذ بالله من الشيطان الرجيم" : "بسم الله الرحمن الرحيم"}
-          </Text>
 
-          {Object.values(
-            surah.verses.reduce((acc: any, verse: any) => {
-              const page = verse.page;
-              if (!acc[page]) acc[page] = [];
-              acc[page].push(verse);
-              return acc;
-            }, {})
-          ).map((versesInPage: any, index: number) => (
-            <View key={index} className="mb-6">
-              <Text className="leading-loose text-black font-semibold text-center" style={{ fontSize, fontFamily: 'hafs' }}>
-                {versesInPage.map((verse: any) => (
-                  <Text
-                    key={verse.number}
-                    onPress={() => updateTafsirVerses(verse)}
-                    onLongPress={() => handleLongPress(verse)}
-                    className={`font-semibold ${tafsirVerses.find((v) => v.number == verse.number) && "bg-gray-200 px-3"}`}
-                    style={{ fontFamily: 'hafs', fontSize }}
-                  >
-                    {verse.text.ar}
-                    <Text className="text-[#4db6ac] font-bold" style={{ fontFamily: 'hafs' }}>
-                      {" "}{toArabic(verse.number)}&#1757;{" "}
+        viewState === "joined" ? (
+          <View className="p-2">
+            <Text className="text-2xl leading-loose font-bold text-right mx-auto text-[#4db6ac]" style={{ fontFamily: 'bismillah' }}>
+              {surah.number == 9 ? "أعوذ بالله من الشيطان الرجيم" : "بسم الله الرحمن الرحيم"}
+            </Text>
+
+            {Object.values(
+              surah.verses.reduce((acc: any, verse: any) => {
+                const page = verse.page;
+                if (!acc[page]) acc[page] = [];
+                acc[page].push(verse);
+                return acc;
+              }, {})
+            ).map((versesInPage: any, index: number) => (
+              <View key={index} className="mb-6">
+                <Text className="leading-loose text-black font-semibold text-center" style={{ fontSize, fontFamily: 'hafs' }}>
+                  {versesInPage.map((verse: any) => (
+                    // <Text
+                    //   key={verse.number}
+                    //   onPress={() => updateTafsirVerses(verse)}
+                    //   onLongPress={() => handleLongPress(verse)}
+                    //   className={`font-semibold ${tafsirVerses.find((v) => v.number == verse.number) && "bg-gray-200 px-3"}`}
+                    //   style={{ fontFamily: 'hafs', fontSize }}
+                    // >
+                    //   {verse.text.ar}
+                    //   <Text className="text-[#4db6ac] font-bold" style={{ fontFamily: 'hafs' }}>
+                    //     {" "}{toArabic(verse.number)}&#1757;{" "}
+                    //   </Text>
+                    // </Text>
+                    <Text
+                      key={verse.number}
+                      onPress={() => updateTafsirVerses(verse)}
+                      onLongPress={() => handleLongPress(verse)}
+                      className={`font-semibold ${tafsirVerses.find((v) => v.number == verse.number) && "bg-gray-200 px-3"}`}
+                      style={{
+                        fontFamily: 'hafs',
+                        fontSize,
+                        direction: 'rtl',
+                        writingDirection: 'rtl',
+                        textAlign: 'center',
+                        // lineHeight: fontSize * 1.6,
+                        includeFontPadding: false,
+                      }}
+                    >
+                      
+                      {verse.text.ar}
+                      <Text
+                        style={{
+                          fontFamily: 'hafs',
+                          color: '#4db6ac',
+                          fontWeight: 'bold',
+                          direction: 'rtl',
+                          writingDirection: 'rtl',
+                        }}
+                      >
+                        {' '}{toArabic(verse.number)}&#1757;{' '}
+                      </Text>
                     </Text>
-                  </Text>
-                ))}
-              </Text>
 
-              <View className="mt-4 mb-2 border-t border-gray-300">
-                <Text className="text-center w-full mt-1 bg-[#4db6ac] p-2 rounded-full text-white mx-auto">
-                  {versesInPage[0].page}
+                  ))}
                 </Text>
+
+                <View className="mt-4 mb-2 border-t border-gray-300">
+                  <Text className="text-center w-full mt-1 bg-[#4db6ac] p-2 rounded-full text-white mx-auto">
+                    {versesInPage[0].page}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
-   {/* ✅ الأزرار الثابتة في الأسفل */}
-  {/* {tafsirVerses.length > 0 && (
+            ))}
+            {/* ✅ الأزرار الثابتة في الأسفل */}
+            {/* {tafsirVerses.length > 0 && (
     <View
       style={{
         position: 'absolute',
@@ -728,54 +758,67 @@ console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
       </Pressable>
     </View>
   )} */}
-        </View>
-      ) 
-      
-      : (
-        <View>
-          <Text className="text-2xl font-bold text-right mx-auto text-[#4db6ac]" style={{ fontFamily: 'bismillah' }}>
-            {surah.number == 9 ? "أعوذ بالله من الشيطان الرجيم" : "بسم الله الرحمن الرحيم"}
-          </Text>
-          <FlatList
-            data={surah.verses}
-            keyExtractor={(item) => item.number.toString()}
-            contentContainerStyle={{ padding: 12 }}
-            renderItem={({ item, index }) => (
-              <View className="mb-4 p-4 bg-white rounded-xl shadow">
-                <Text
-                  className="text-xl text-right text-black leading-relaxed"
-                  style={{ fontFamily: 'hafs', fontSize }}
-                  onLongPress={() => handleLongPress(item)}
-                >
-                  {item.text.ar}
-                  <Text className="text-[#4db6ac] font-bold">
-                    {" "}{toArabic(item.number)}&#1757;
-                  </Text>
-                </Text>
-                <Text className="text-gray-600 mt-2" style={{ fontFamily: 'hafs', fontSize }}>
-                  {item.text.en}
-                </Text>
-                {/* ===== Copy Button + Copied message ===== */}
-              <View className="flex-row items-center self-end mt-3">
-                <Pressable onPress={() => copyToClipboard(`${item.text.ar} 🌐 ${item.text.en}`, index)}>
-                  <Image
-                    source={require('../assets/icons/copy.png')}
-                    style={{ width: 25, height: 25 }}
-                  />
-                </Pressable>
+          </View>
+        )
 
-                {copiedIndex === index && (
-                  <View className="ml-2 bg-gray-200 px-3 py-1 rounded-full flex-row items-center">
-                    <Text className="text-gray-700 font-semibold mr-1">Copied</Text>
-                    <Text style={{ fontSize: 18 }}>✅</Text>
+          : (
+            <View>
+              <Text className="text-2xl font-bold text-right mx-auto text-[#4db6ac]" style={{ fontFamily: 'bismillah' }}>
+                {surah.number == 9 ? "أعوذ بالله من الشيطان الرجيم" : "بسم الله الرحمن الرحيم"}
+              </Text>
+              <FlatList
+                data={surah.verses}
+                keyExtractor={(item) => item.number.toString()}
+                contentContainerStyle={{ padding: 12 }}
+                renderItem={({ item, index }) => (
+                  <View className="mb-4 p-4 bg-white rounded-xl shadow">
+                    <Text
+                      style={{
+                        fontFamily: 'hafs',
+                        fontSize,
+                        direction: 'rtl',
+                        writingDirection: 'rtl',
+                        textAlign: 'left',
+                        lineHeight: fontSize * 1.6,
+                      }}
+                    >
+                      {item.text.ar}
+                      <Text
+                        style={{
+                          color: '#4db6ac',
+                          fontWeight: 'bold',
+                          direction: 'rtl',
+                          writingDirection: 'rtl',
+                        }}
+                      >
+                        {' '}{toArabic(item.number)}&#1757;
+                      </Text>
+                    </Text>
+
+                    <Text className="text-gray-600 mt-2" style={{ fontFamily: 'hafs', fontSize }}>
+                      {item.text.en}
+                    </Text>
+                    {/* ===== Copy Button + Copied message ===== */}
+                    <View className="flex-row items-center self-end mt-3">
+                      <Pressable onPress={() => copyToClipboard(`${item.text.ar} 🌐 ${item.text.en}`, index)}>
+                        <Image
+                          source={require('../assets/icons/copy.png')}
+                          style={{ width: 25, height: 25 }}
+                        />
+                      </Pressable>
+
+                      {copiedIndex === index && (
+                        <View className="ml-2 bg-gray-200 px-3 py-1 rounded-full flex-row items-center">
+                          <Text className="text-gray-700 font-semibold mr-1">Copied</Text>
+                          <Text style={{ fontSize: 18 }}>✅</Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
                 )}
-              </View>
-              </View>
-            )}
-          />
-        </View>
-      )}
+              />
+            </View>
+          )}
 
       {/* ✅ المودال لعرض التفسير */}
       <Modal
@@ -826,3 +869,33 @@ console.log(isCopied, 'rrrrrrrrrrrrrrrrrrrrrrr');
 export default SurahView;
 
 const styles = StyleSheet.create({});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// <Text
+//                     className="text-xl text-right text-black leading-relaxed text-[#4db6ac] font-bold"
+//                     style={{ fontFamily: 'hafs', fontSize }}
+//                     onLongPress={() => handleLongPress(item)}
+//                   >
+//                     {`${item.text.ar}  ${toArabic(item.number)}۝`}
+
+//                     {item.text.ar}
+//                 <Text className="">
+//                   {" "}{toArabic(item.number)}&#1757;
+//                 </Text>
+//                   </Text>
