@@ -42,84 +42,6 @@
 
 
 
-
-
-// import { Image } from 'expo-image';
-// import { Platform, StyleSheet } from 'react-native';
-
-// import { HelloWave } from '@/components/HelloWave';
-// import ParallaxScrollView from '@/components/ParallaxScrollView';
-// import { ThemedText } from '@/components/ThemedText';
-// import { ThemedView } from '@/components/ThemedView';
-
-// export default function HomeScreen() {
-//   return (
-//     <ParallaxScrollView
-//       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-//       headerImage={
-//         <Image
-//           source={require('@/assets/images/partial-react-logo.png')}
-//           style={styles.reactLogo}
-//         />
-//       }>
-//       <ThemedView style={styles.titleContainer}>
-//         <ThemedText type="title">Welcome!</ThemedText>
-//         <HelloWave />
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-//         <ThemedText>
-//           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-//           Press{' '}
-//           <ThemedText type="defaultSemiBold">
-//             {Platform.select({
-//               ios: 'cmd + d',
-//               android: 'cmd + m',
-//               web: 'F12',
-//             })}
-//           </ThemedText>{' '}
-//           to open developer tools.
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-//         <ThemedText>
-//           {`Tap the Explore tab to learn more about what's included in this starter app.`}
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-//         <ThemedText>
-//           {`When you're ready, run `}
-//           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-//           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-//         </ThemedText>
-//       </ThemedView>
-//     </ParallaxScrollView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   titleContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 8,
-//   },
-//   stepContainer: {
-//     gap: 8,
-//     marginBottom: 8,
-//   },
-//   reactLogo: {
-//     height: 178,
-//     width: 290,
-//     bottom: 0,
-//     left: 0,
-//     position: 'absolute',
-//   },
-// });
-
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, Animated, Alert, I18nManager } from "react-native";
 // import IconAlnuzul from '@/app/components/IconAlnuzul';
@@ -136,6 +58,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 
 export default function Home() {
   const [surahs, setSurahs] = useState(surahsData);
+  console.log(surahsData.length, 'sssssssssssssssssssssssssssss')
   const [loading, setLoading] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
   const { language, toggleLanguage } = useLanguageStore();
@@ -157,6 +80,8 @@ export default function Home() {
       useNativeDriver: true,
     }).start();
   };
+
+
   const fetchSurahs = async () => {
     try {
       const res = await axios.get("https://www.askalquran.com/_next/data/iXzNJArydAzbEbs3e5DqK/index.json");
@@ -214,20 +139,20 @@ export default function Home() {
       </SafeAreaView>
     );
   }
-  // if (loading) {
-  //   return (
-  //     <View className="flex-1 items-center justify-center">
-  //       <ActivityIndicator size="large" color="#4db6ac" />
-  //     </View>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="#4db6ac" />
+      </View>
+    );
+  }
 
   if (!loaded) {
     // Async font loading only occurs in development.
     return null;
   }
 
-
+console.log( 'rrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeeeee15', surahs[0])
 
 
   //  console.log(surahs[0], 'sssssssssssssssssssssssssssss')
@@ -235,37 +160,7 @@ export default function Home() {
     <RootSiblingParent>
 
       <SafeAreaView className="flex-1 p-2 bg-[#edf0f4]">
-        {/* زر لتغيير اللغة */}
-        {/* <TouchableOpacity
-        onPress={() => setLanguage(language === "ar" ? "en" : "ar")}
-        className="mb-4 bg-green-500 py-2 px-4 rounded"
-      >
-        <Text className="text-white text-center">
-          {language === "ar" ? "Switch to English" : "التبديل للعربية"}
-        </Text>
-
-        
-      </TouchableOpacity> */}
-        {/* <View className="flex flex-row items-center justify-between p-2 ">
-        <TouchableOpacity
-          onPress={ChangeLanguage}
-          className="w-20 h-10  rounded-full flex-row items-center px-1 relative border border-emerald-600"
-          activeOpacity={0.8}
-        >
-          <Text className="absolute left-3 text-xs font-bold">AR</Text>
-          <Text className="absolute right-3 text-xs font-bold">EN</Text>
-
-          <Animated.View
-            className="w-8 h-8 bg-emerald-200/30 rounded-full shadow border border-emerald-600"
-            style={{
-              transform: [{ translateX }],
-            }}
-          />
-        </TouchableOpacity>
-        <Image source={icons.icon} style={{ width: 45, height: 45, borderRadius: 50 }} />
-
-      </View> */}
-
+ 
 
         {/* the title */}
 

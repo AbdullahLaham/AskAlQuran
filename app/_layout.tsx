@@ -47,11 +47,10 @@ import { useFontSize } from "@/store/useFontSize";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import MainHeader from "../components/MainHeader";
 import ThemeToggle from "@/components/ThemeToggle";
-import { RootSiblingParent } from 'react-native-root-siblings';
 
 
 // 🟢 محتوى Drawer مخصص
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props: any) {
   const { fontSize, setFontSize } = useFontSize();
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
@@ -70,6 +69,7 @@ function CustomDrawerContent(props) {
           <Text className="text-gray-500 text-center my-2 font-bold text-xl">
             Font size <Text>{fontSize}</Text>px
           </Text>
+
           <View className="w-full items-center">
 
             <Slider
@@ -121,6 +121,13 @@ export default function Layout() {
           name="index"
           options={{
             title: language === "ar" ? "الصفحة الرئيسيه" : "Home Page",
+          }}
+        />
+        {/* Chat */}
+        <Drawer.Screen
+          name="chat"
+          options={{
+            title: language === "ar" ? "صفحة الدردشة" : "Chat Page",
           }}
         />
 

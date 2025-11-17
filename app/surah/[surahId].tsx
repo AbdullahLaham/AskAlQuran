@@ -15,6 +15,8 @@ import NavigationButtons from "../../components/NavigationButton";
 import SurahView from "../../components/SurahView";
 import ToggleModeButton from "../../components/ToggleModeButton";
 import { normalizeDuration } from "react-native-reanimated/lib/typescript/css/native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 import Toast from 'react-native-toast-message';
 
 
@@ -312,6 +314,7 @@ return (
 
 
   return (
+
     <SafeAreaView className="flex-1 bg-gray-100">
       {/* Verses */}
       <ScrollView>
